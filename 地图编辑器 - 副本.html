@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick = "javascript: now = 0">擦除</button>
+    <button onclick = "javascript: now = 1">sz</button>
+    <button onclick = "javascript: now = 2">sy</button>
+
+    <canvas id="canvas" width="800" height="400" style="border:1px solid #000"></canvas>
+    <textarea  id="textarea" cols="30" rows="10"></textarea>
+    <script>
+        var mapArr = (function(){
+            var _result = [];
+            for (var i = 0; i < 8; i++) {
+                var _row = []
+                for (var j = 0; j < 16; j++) {
+                    _row.push(0);
+                }
+                _result.push(_row);
+            }
+            return _result;
+        })();
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        var imgArr = [
+            "1.png",
+            "2.png",
+        ]
+        var R = [];
+        var alreadyDownCount = 0;
+        for(var i = 0; i < imgArr.length; i++){
+            var image = new Image();
+            image.src = "images/" + imgArr[i];
+            R[imgArr[i]] = image;
+            image.onload = function(){
+                alreadyDownCount++;
+                if(alreadyDownCount == imgArr.length){
+                    start();
+                }
+            }
+        }
+        function start(){
+            canvas.onmousedown = function(e){
+                draw(parseInt(e.offsetX / 50) * 50, parseInt(e.offsetY / 50) * 50)
+                canvas.onmousemove = function(e){
+                   draw(parseInt(e.offsetX / 50) * 50, parseInt(e.offsetY / 50) * 50)
+                }
+            }
+            canvas.onmouseup = function (e) {
+                canvas.onmousemove = null;
+            }
+        }
+        var now = 1;
+       function draw(x,y) {
+            if(now != 0){
+                ctx.drawImage(R[now + ".png"], x, y, 50, 50);
+            }else{
+                ctx.clearRect(x,y, 50, 50);
+            }
+
+           var row = y/ 50;
+           var col = x/ 50;
+
+           mapArr[row][col] = now;
+
+           document.getElementById("textarea").value = JSON.stringify(mapArr);
+       }
+    </script>
+</body>
+</html>
