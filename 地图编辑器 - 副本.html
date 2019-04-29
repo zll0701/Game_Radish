@@ -8,17 +8,19 @@
 </head>
 <body>
     <button onclick = "javascript: now = 0">擦除</button>
-    <button onclick = "javascript: now = 1">sz</button>
-    <button onclick = "javascript: now = 2">sy</button>
+    <button onclick = "javascript: now = 1">方块</button>
+    <button onclick = "javascript: now = 2">点</button>
+    <button onclick = "javascript: now = 3">点</button>
+    <button onclick = "javascript: now = 4">点</button>
 
-    <canvas id="canvas" width="800" height="400" style="border:1px solid #000"></canvas>
+    <canvas id="canvas" width="432" height="600" style="border:1px solid #000;background: #000"></canvas>
     <textarea  id="textarea" cols="30" rows="10"></textarea>
     <script>
         var mapArr = (function(){
             var _result = [];
-            for (var i = 0; i < 8; i++) {
+            for (var i = 0; i < 25; i++) {
                 var _row = []
-                for (var j = 0; j < 16; j++) {
+                for (var j = 0; j < 18; j++) {
                     _row.push(0);
                 }
                 _result.push(_row);
@@ -27,10 +29,11 @@
         })();
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
-
         var imgArr = [
             "1.png",
             "2.png",
+            "3.png",
+            "4.png",
         ]
         var R = [];
         var alreadyDownCount = 0;
@@ -47,9 +50,9 @@
         }
         function start(){
             canvas.onmousedown = function(e){
-                draw(parseInt(e.offsetX / 50) * 50, parseInt(e.offsetY / 50) * 50)
+                draw(parseInt(e.offsetX / 24) * 24, parseInt(e.offsetY / 24) * 24)
                 canvas.onmousemove = function(e){
-                   draw(parseInt(e.offsetX / 50) * 50, parseInt(e.offsetY / 50) * 50)
+                   draw(parseInt(e.offsetX / 24) * 24, parseInt(e.offsetY / 24) * 24)
                 }
             }
             canvas.onmouseup = function (e) {
@@ -59,13 +62,13 @@
         var now = 1;
        function draw(x,y) {
             if(now != 0){
-                ctx.drawImage(R[now + ".png"], x, y, 50, 50);
+                ctx.drawImage(R[now + ".png"], x, y, 24, 24);
             }else{
-                ctx.clearRect(x,y, 50, 50);
+                ctx.clearRect(x,y, 24, 24);
             }
 
-           var row = y/ 50;
-           var col = x/ 50;
+           var row = y/ 24;
+           var col = x/ 24;
 
            mapArr[row][col] = now;
 
